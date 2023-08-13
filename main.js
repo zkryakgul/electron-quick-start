@@ -1,18 +1,17 @@
-// Modules to control application life and create native browser window
-const { app, BrowserWindow } = require('electron')
+const { app, BrowserWindow, globalShortcut } = require('electron')
 const path = require('path')
 
 function createWindow () {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
-    width: 800,
-    height: 600,
     kiosk: true,
     fullscreen: true,
     frame: false,
     autoHideMenuBar: true,
     skipTaskbar: true,
+    minimizable: false,
     webPreferences: {
+      devTools: false,
       preload: path.join(__dirname, 'preload.js')
     }
   })
@@ -23,6 +22,20 @@ function createWindow () {
   // Open the DevTools.
   // mainWindow.webContents.openDevTools()
   mainWindow.maximize();
+  mainWindow.setAlwaysOnTop(true, 'screen-saver');
+  mainWindow.resizable = false;
+
+  // Register the F11 key event
+  globalShortcut.register('F11', () => {
+    if (mainWindow.isFullScreen()) {
+      // Prevent default behavior
+      return;
+    }
+
+    // Toggle fullscreen mode
+    mainWindow.setFullScreen(!mainWindow.isFullScreen());
+  });
+
 }
 
 // This method will be called when Electron has finished
