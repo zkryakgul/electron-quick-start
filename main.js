@@ -23,7 +23,6 @@ function createWindow () {
   // mainWindow.webContents.openDevTools()
   mainWindow.maximize();
   mainWindow.setAlwaysOnTop(true, 'screen-saver');
-  mainWindow.resizable = false;
 
   // Register the F11 key event
   globalShortcut.register('F11', () => {
